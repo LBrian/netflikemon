@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }
   const removeAuth = () => {
     setCurrentUser(null)
-    localStorage.removeItem(AUTH_KEY)
+    localStorage.clear()
   }
 
   return (

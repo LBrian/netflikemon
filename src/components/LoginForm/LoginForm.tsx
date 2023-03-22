@@ -29,7 +29,7 @@ const LoginForm = () => {
 
   return (
     <div className='m-auto max-w-xs w-full'>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+      <form data-testid='login-form' onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
         <div>
           <input
             disabled={loading}

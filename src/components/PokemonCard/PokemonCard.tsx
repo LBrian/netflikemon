@@ -1,6 +1,6 @@
 import type { Pokemon } from 'pokenode-ts'
-import { ComponentProps, startTransition, useEffect, useState } from 'react'
-import { usePokemonClient } from '../../hooks'
+import { ComponentProps, startTransition, useCallback, useEffect, useState } from 'react'
+import { useFavorite, usePokemonClient } from '../../hooks'
 import Modal from '../Modal'
 
 type Props = {
@@ -11,6 +11,15 @@ const PokemonCard = ({ name, ...props }: Props) => {
   const { client } = usePokemonClient()
   const [pokemon, setPokemon] = useState<Pokemon>()
   const [loading, setLoading] = useState(false)
+  const { favorite, unfavorite, favorites } = useFavorite()
+
+  const handleFavorite = useCallback(() => {
+    if (favorites.includes(name)) {
+      unfavorite(name)
+    } else {
+      favorite(name)
+    }
+  }, [name, favorites])
 
   useEffect(() => {
     if (name) {
@@ -41,6 +50,28 @@ const PokemonCard = ({ name, ...props }: Props) => {
         </figure>
         <div className='card-body items-center text-center'>
           <h2 className='card-title mb'>{name}</h2>
+          <button
+            data-testid='favorite'
+            aria-label='Favorite'
+            className={`btn btn-xs gap-2 mb-3 ${favorites.includes(name) ? 'btn-accent' : 'glass'}`}
+            onClick={handleFavorite}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-4 w-4'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+              />
+            </svg>
+            Favorite
+          </button>
           <div className='text-xs text-neutral-400'>
             <div>Height: {pokemon?.height || '-'}</div>
             <div>Weight: {pokemon?.weight || '-'}</div>

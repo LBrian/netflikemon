@@ -1,6 +1,6 @@
 import type { NamedAPIResource } from 'pokenode-ts'
 import { ChangeEvent, startTransition, useEffect, useState } from 'react'
-import { usePokemonClient } from '../../hooks'
+import { useFavorite, usePokemonClient } from '../../hooks'
 import PokemonCard from '../PokemonCard'
 
 const PokemonList = () => {
@@ -12,6 +12,7 @@ const PokemonList = () => {
   const [prev, setPrev] = useState(false)
   const [pokemon, setPokemon] = useState('')
   const [pokemons, setPokemons] = useState<NamedAPIResource[]>()
+  const { favorites } = useFavorite()
 
   const handleNext = () => {
     setPage(page + 1)
@@ -42,7 +43,7 @@ const PokemonList = () => {
     resetFilter()
 
     client.pokemon
-      .listPokemons(page, 40)
+      .listPokemons(page * 40, 40)
       .then((data) => {
         setPokemons(data.results)
         setNext(!!data.next)
@@ -60,6 +61,7 @@ const PokemonList = () => {
           type='text'
           placeholder='Filter'
           value={filter}
+          data-testid='pokemon-filter'
           onChange={handleChangeFilter}
           className='input input-bordered w-full max-w-xs'
         />
@@ -89,11 +91,11 @@ const PokemonList = () => {
           <button
             key={name}
             onClick={togglePokemonCard(name)}
-            data-testid={`pokemon-${name}`}
+            data-testid={name.includes(filter) && `pokemon-item-${name}`}
             aria-label={`Pokemon ${name}`}
-            className={`card glass shadow-xl items-center text-center ${loading && 'animate-pulse'} ${
-              !name.includes(filter) && 'hidden'
-            }`}
+            className={`card shadow-xl items-center text-center ${loading && 'animate-pulse'} ${
+              favorites.includes(name) ? 'btn-accent' : 'glass'
+            } ${!name.includes(filter) && 'hidden'}`}
           >
             <div className='card-body'>
               <div className='avatar placeholder'>

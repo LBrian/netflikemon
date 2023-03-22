@@ -11,7 +11,7 @@ function Header() {
           <button data-testid='logout' aria-label='Log out' className='btn btn-xs btn-ghost' onClick={removeAuth}>
             Log out
           </button>
-          <div className='avatar placeholder'>
+          <div data-testid='avatar' className='avatar placeholder'>
             <div className='bg-neutral-focus text-neutral-content rounded-full w-12'>
               <span className='text-lg capitalize'>{currentUser?.charAt(0)}</span>
             </div>

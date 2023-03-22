@@ -72,3 +72,7 @@ Lunches `Playwright` e2e test and local web server to test against it. Test resu
 Builds the app for production to the `build` folder.
 
 ## Work note
+
+- 30 mins read through requirements and write test cases (TDD)
+- 10 mins scaffolding
+- 4 hrs implementation
